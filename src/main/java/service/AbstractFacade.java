@@ -5,8 +5,10 @@
  */
 package service;
 
+import com.mypayment.paymentgateway.Payment;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -58,6 +60,25 @@ public abstract class AbstractFacade<T> {
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+    
+    public long checkValidation(String cardNumber, String securityNumber, double availableAmount){
+        
+        try{
+        String q = "SELECT e FROM Payment e WHERE e.cardNumber=:cardNumber AND e.securityNumber=:securityNumber AND e.totalAmount=:availableAmount";
+        TypedQuery <Payment> query = getEntityManager().createQuery(q, Payment.class);
+        query.setParameter("cardNumber", cardNumber);
+        query.setParameter("securityNumber", securityNumber);
+        query.setParameter("availableAmount", availableAmount);      
+        Payment f = query.getSingleResult();
+        return f.getId();
+        }
+        catch(Exception exeption)
+        {
+            return 0;
+        }
+        
+       
     }
     
 }

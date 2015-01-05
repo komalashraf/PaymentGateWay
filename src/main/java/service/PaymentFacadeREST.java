@@ -97,5 +97,18 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
         return String.valueOf(super.find(1));
     }
     
+    @GET
+    @Path("checkValidation/{cardNumber}/{securityNumber}/{availableAmount}")
+    @Produces({"text/plain"})
+    public boolean getValidation(@PathParam("cardNumber") String cardNumber, @PathParam("securityNumber") String securityNumber, @PathParam("availableAmount") double availableAmount){
+       
+         long id=super.checkValidation(cardNumber, securityNumber, availableAmount);
+         if(id==0)
+         {
+            return false; 
+         }
+         return true;
+    }
+    
     
 }
