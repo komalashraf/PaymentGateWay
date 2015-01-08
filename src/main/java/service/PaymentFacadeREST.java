@@ -99,16 +99,21 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
     
     @GET
     @Path("checkValidation/{cardNumber}/{securityNumber}/{availableAmount}")
-    @Produces({"text/plain"})
-    public boolean getValidation(@PathParam("cardNumber") String cardNumber, @PathParam("securityNumber") String securityNumber, @PathParam("availableAmount") double availableAmount){
+    @Produces({"text/plain","application/xml", "application/json"})
+    public Payment getValidation(@PathParam("cardNumber") String cardNumber, @PathParam("securityNumber") String securityNumber, @PathParam("availableAmount") double availableAmount){
        
-         long id=super.checkValidation(cardNumber, securityNumber, availableAmount);
-         if(id==0)
-         {
-            return false; 
+      return super.checkValidation(cardNumber, securityNumber, availableAmount);
+         
+      //   return payment;
          }
-         return true;
-    }
+    
+
+//    @GET
+//    @Path("findCardByNumber/{cardNumber}")
+//    @Produces({"application/xml", "application/json"})
+//    public boolean findCardByNumber(@PathParam("cardNumber") String cardNumber) {
+//        return super.findCardByNumber(cardNumber);
+//    }
     
     
 }

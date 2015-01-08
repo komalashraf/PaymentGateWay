@@ -62,23 +62,39 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
     
-    public long checkValidation(String cardNumber, String securityNumber, double availableAmount){
+    public Payment checkValidation(String cardNumber, String securityNumber, double availableAmount){
         
+         Payment f = new Payment();
         try{
         String q = "SELECT e FROM Payment e WHERE e.cardNumber=:cardNumber AND e.securityNumber=:securityNumber AND e.totalAmount=:availableAmount";
         TypedQuery <Payment> query = getEntityManager().createQuery(q, Payment.class);
         query.setParameter("cardNumber", cardNumber);
         query.setParameter("securityNumber", securityNumber);
         query.setParameter("availableAmount", availableAmount);      
-        Payment f = query.getSingleResult();
-        return f.getId();
+        f=query.getSingleResult();
+        if(f!=null){
+        return f;
+        }
+       
+          
         }
         catch(Exception exeption)
         {
-            return 0;
-        }
+              return f;
         
+        }
+         return f;
+    }
+        public boolean findCardByNumber(String cardNumber){
        
+            String q = "SELECT e FROM Payment e WHERE e.cardNumber=:cardNumber";
+            TypedQuery <Payment> query = getEntityManager().createQuery(q, Payment.class);
+        query.setParameter("cardNumber", cardNumber);
+        Payment f = query.getSingleResult();
+        if(f!=null){
+        return true;
+        }
+            return false;       
     }
     
 }
