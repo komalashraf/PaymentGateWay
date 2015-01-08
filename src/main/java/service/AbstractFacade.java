@@ -62,15 +62,15 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
     
-    public Payment checkValidation(String cardNumber, String securityNumber, double availableAmount){
+    public Payment checkValidation(String cardNumber, String securityNumber, double amount){
         
          Payment f = new Payment();
         try{
-        String q = "SELECT e FROM Payment e WHERE e.cardNumber=:cardNumber AND e.securityNumber=:securityNumber AND e.totalAmount=:availableAmount";
+        String q = "SELECT e FROM Payment e WHERE e.cardNumber=:cardNumber AND e.securityNumber=:securityNumber AND e.totalAmount >=:amount";
         TypedQuery <Payment> query = getEntityManager().createQuery(q, Payment.class);
         query.setParameter("cardNumber", cardNumber);
         query.setParameter("securityNumber", securityNumber);
-        query.setParameter("availableAmount", availableAmount);      
+        query.setParameter("amount", amount);      
         f=query.getSingleResult();
         if(f!=null){
         return f;
